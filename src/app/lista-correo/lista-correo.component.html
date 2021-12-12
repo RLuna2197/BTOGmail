@@ -1,0 +1,202 @@
+<!-- Menu lateral  -->
+<div class="main_body">
+
+<div class="sidebar">
+    <button type="button" class="sidebar_compose"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <span class="material-icons">add</span>
+        Redactar
+    </button>
+    <!-- modal  -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="" [formGroup]="formularioAgregar">
+                <div class="form-group">
+                    <label for="">De:</label>
+                    <input type="text" formControlName="nombreEmisor" class="form-control">
+                    <div *ngIf="formularioAgregar.controls['nombreEmisor'].invalid && formularioAgregar.controls['nombreEmisor'].dirty" >
+                        <span *ngIf="this.formularioAgregar.get('nombreEmisor').errors?.required"  class="badge bg-danger">
+                            Este campo es obligatorio
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Para:</label>
+                    <input type="text" formControlName="correoReceptor" class="form-control">
+                    <div *ngIf="formularioAgregar.controls['correoReceptor'].invalid && formularioAgregar.controls['correoReceptor'].dirty" >
+                        <span *ngIf="this.formularioAgregar.get('correoReceptor').errors?.required"  class="badge bg-danger">
+                            Este campo es obligatorio
+                        </span>
+                        
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="">Asunto:</label>
+                    <input type="text" formControlName="asunto" class="form-control">
+                    <div *ngIf="formularioAgregar.controls['asunto'].invalid && formularioAgregar.controls['asunto'].dirty" >
+                        <span *ngIf="this.formularioAgregar.get('asunto').errors?.required"  class="badge bg-danger">
+                            Este campo es obligatorio
+                        </span>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Mensaje:</label>
+                    <textarea  type="text" formControlName="mensaje" class="form-control"></textarea>
+                    <div *ngIf="formularioAgregar.controls['mensaje'].invalid && formularioAgregar.controls['mensaje'].dirty" >
+                        <span *ngIf="this.formularioAgregar.get('mensaje').errors?.required"  class="badge bg-danger">
+                            Este campo es obligatorio
+                        </span>
+                        
+                    </div>
+                </div>
+                <button [disabled]="!formularioAgregar.valid" (click)="agregar()" class="btn btn-primary"> Enviar</button>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    <!-- modal -->
+
+    <div class="modal" *ngIf ="modal">
+        <h3>Esto es el modal</h3>
+        <button>hola</button>
+        <button (click)="cerrarModal();">hola</button>
+    </div>
+    <div class="sidebarOption"  (click)="mostrarRecibidos();">
+        <span class="material-icons">inbox</span>
+        <h3>Recibidos</h3>
+    </div> 
+
+    <div class="sidebarOption" (click)="mostrarEnviados();">
+        <span class="material-icons">send</span>
+        <h3>Enviados</h3>
+    </div>
+
+    <div class="sidebarOption " (click)="mostrarDestacados();">
+        <span class="material-icons">label_important</span>
+        <h3>Destacados</h3>
+    </div>
+
+    <div class="sidebarOption " (click)="mostrarSpam();">
+        <span class="material-icons">report</span>
+        <h3>Spam</h3>
+    </div>
+
+    <div class="sidebarOption "  (click)="mostrarPapelera();">
+        <span class="material-icons">delete</span>
+        <h3>Papelera</h3>
+    </div>
+
+    <div class="sidebar_footer">
+        <div class="sidebar_footericons">
+            <span class="material-icons">
+                person    
+            </span>
+            <span class="material-icons">
+                duo
+            </span>
+            <span class="material-icons">
+                phone    
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Menu lateral  -->
+<div class="emailList">
+    <!-- settings -->
+    <div class="emailList_settings">
+        <div class="emailList_settingsLeft">
+            <input type="checkbox">
+            <span class="material-icons">arrow_drop_down</span>
+            <span class="material-icons">redo</span>
+            <span class="material-icons">more_vert</span>
+ 
+        </div>
+        <div class="emailList_settingsRight">
+            <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="Anterior"
+                nextLabel="Siguiente" ></pagination-controls>
+            <!-- <span class="material-icons">chevron_left</span>
+            <span class="material-icons">chevron_right</span>
+            <span class="material-icons">keyboard_hide</span>
+            <span class="material-icons"> settings</span> -->
+        </div>
+    </div>
+    <!-- settings -->
+
+    <!-- seccion -->
+    <div class="emailList_sections">
+        <div class="section section_selected">
+            <span class="material-icons ">
+               inbox   
+            </span>
+            <h4>Principal</h4>
+        </div>
+        <div class="section">
+            <span class="material-icons">
+               people 
+            </span>
+            <h4>Social</h4>
+        </div>
+        <div class="section">
+            <span class="material-icons">
+               local_offer   
+            </span>
+            <h4>Promociones</h4>
+        </div>
+    </div>
+    <!-- seccion -->
+
+    <!-- lista correos -->
+    <div class="emailList_list">
+        
+            <!-- rows -->
+            <div class="emailRow" *ngFor='let correo of correos | paginate: { itemsPerPage: 5, currentPage: page }' [ngStyle]="{'background-color':correo.leido ? '#E9E9E9' : '#FFFFFF' }">
+                <div class="emailRow_option">
+                    <input type="checkbox" name="" id="">
+                    <div>
+                    <span class="material-icons" [ngStyle]="{'color':correo.spam  ? 'red' : 'grey' }" (click)="Spam(correo);">report</span>
+                    </div>
+                    <span class="material-icons" [ngStyle]="{'color':correo.destacado  ? 'yellow' : 'grey' }" (click)="Importante(correo);">label_important</span>
+                
+                </div>
+
+                <h3 class="emailRow_title">{{correo.nombreEmisor}}</h3>
+
+                <div class="emailRow_message" (click)="leer(correo);">
+                    <h4 >{{correo.asunto}}
+                        <span class="emailRow_description" >- {{correo.mensaje}} </span>
+                    </h4>
+                </div>
+                <p class="emailRow_time">{{correo.fecha}}</p>
+                <div>
+                <span class="material-icons" [ngStyle]="{'color':correo.eliminado  ? 'red' : 'grey' }" (click)="eliminado(correo);" >delete</span>
+                </div>
+            </div>
+            <!-- rows -->
+            
+            
+    </div>
+    <!-- lista correos -->
+
+</div>
+
+
+</div>
+
+
+
+
